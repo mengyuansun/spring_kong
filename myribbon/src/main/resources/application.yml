@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: ribbon-consumer # ribbon 负载均衡时，集群用同意的 name
+server:
+  port: 1114
+eureka:
+  client:
+    service-url:
+      defaultZone:   http://127.0.0.1:7001/eureka/

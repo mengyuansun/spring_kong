@@ -1,0 +1,31 @@
+test:
+  uri: lb://service-one
+spring:
+  application:
+    name: gateway-client
+  cloud:
+    gateway:
+      routes:  # 路由
+        - id: route_service_one
+          uri: ${test.uri} # uri以lb://开头（lb代表从注册中心获取服务），后面接的就是你需要转发到的服务名称
+          predicates:
+            - Path=/user/**
+        - id: route_service_two
+          uri: ${test.uri} # uri以lb://开头（lb代表从注册中心获取服务），后面接的就是你需要转发到的服务名称
+          predicates:
+            - Path=/order/**
+server:
+  port: 7008
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka/
+  instance:
+    instance-id: eureka-gateway-prover-provider-test # 修改映射主机名称

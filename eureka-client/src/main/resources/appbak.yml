@@ -1,0 +1,53 @@
+server:
+  #端口
+  port: 8080
+  tomcat:
+    connection-timeout: 5000ms
+    uri-encoding: UTF-8
+    #默认200，maxConnections的设置与Tomcat的运行模式有关。如果tomcat使用的是BIO，那么maxConnections的值应该与maxThreads一致；如果tomcat使用的是NIO，maxConnections值应该远大于maxThreads
+    max-threads: 500
+  servlet:
+    context-path: /test
+    session:
+      timeout: 30m
+
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      #文件大小限制
+      max-file-size: 100MB
+      max-request-size: 100MB
+  mvc:
+    #是否抛出没有处理的异常
+    throw-exception-if-no-handler-found: true
+
+#mybatis
+mybatis-plus:
+  #实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.test.modules.*.entity
+  global-config:
+    #数据库相关配置
+    db-config:
+      id-type: auto
+    banner: false
+  #原生配置
+  configuration:
+    #下划线转驼峰
+    map-underscore-to-camel-case: true
+    #因为mybatis缓存只在独立sqlSession中共享，某些情况下会产生脏数据，所以关闭
+    cache-enabled: false
+    #如果查询语句中某些字段值是null的，则这个字段就无法返回，设置为true则可以
+    call-setters-on-nulls: true
+    #插入时如果字段为null值，提供NULL作为默认值
+    jdbc-type-for-null: 'null'
+
+soonsolid:
+  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】
+  jwt:
+    # 加密秘钥
+    secret: fdasdkghasjkgh1234dgqsdf
+    # token有效时长，单位秒
+    expire: 1440
+    header: token
